@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -20,6 +24,8 @@ public class Main extends Application {
     private final URL displayURL = getClass().getResource("/Display.fxml");
     private final ExecutorService service = Executors.newCachedThreadPool();
     private final Logger logger = Logger.getLogger("Application");
+    private final Path propertiesPath = Paths.get(".\\.properties");
+    private final Properties properties = new Properties();
 
     public static void main(String[] args) {
         launch(args);
@@ -27,6 +33,10 @@ public class Main extends Application {
 
     public ExecutorService getService() {
         return service;
+    }
+
+    public Properties getProperties() {
+        return properties;
     }
 
     public void log(Level level, String message, Exception e) {
@@ -55,6 +65,23 @@ public class Main extends Application {
 
         log(Level.INFO, "Starting application", null);
 
+        loadProperties();
+        loadDisplay(primaryStage);
+    }
+
+    private void loadProperties() {
+        try {
+            if (Files.exists(propertiesPath)) {
+                properties.load(Files.newInputStream(propertiesPath));
+            } else {
+                //TODO: load default properties
+            }
+        } catch (IOException e) {
+            log(Level.WARNING, "Failed to load properties", e);
+        }
+    }
+
+    private void loadDisplay(Stage primaryStage) {
         try {
             Parent parent = FXMLLoader.load(displayURL);
             Scene scene = new Scene(parent);
@@ -68,6 +95,15 @@ public class Main extends Application {
     @Override
     public void stop() {
         log(Level.INFO, "Stopping application", null);
+
+        try {
+            if (!Files.exists(propertiesPath)) {
+                Files.createFile(propertiesPath);
+            }
+            properties.store(Files.newOutputStream(propertiesPath), null);
+        } catch (IOException e) {
+            log(Level.WARNING, "Failed to store properties", e);
+        }
 
         service.shutdown();
 
