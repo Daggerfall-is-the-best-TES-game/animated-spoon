@@ -1,10 +1,8 @@
 package org.arsok.app;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.arsok.lib.FXMLBundleFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -85,10 +83,7 @@ public class Main extends Application {
 
     private void loadDisplay(Stage primaryStage) {
         try {
-            Parent parent = FXMLLoader.load(displayURL);
-            Scene scene = new Scene(parent);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            FXMLBundleFactory.newFXMLBundle(displayURL, primaryStage);
         } catch (IOException e) {
             log(Level.SEVERE, "Failed to load display", e);
         }

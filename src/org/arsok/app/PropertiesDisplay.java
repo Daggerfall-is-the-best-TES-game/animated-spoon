@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import org.arsok.lib.Controller;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class PropertiesDisplay implements Initializable {
+public class PropertiesDisplay extends Controller implements Initializable {
     private final HashMap<String, TextField> fields = new HashMap<>();
     @FXML
     private GridPane propertiesPane;
@@ -32,6 +33,7 @@ public class PropertiesDisplay implements Initializable {
             //display alert
         } else {
             //close normally
+            stage.close();
         }
     }
 
@@ -61,6 +63,7 @@ public class PropertiesDisplay implements Initializable {
                     field.textProperty()
                             .addListener((observable, oldValue, newValue) -> changed = true);
 
+                    //TODO: center nodes
                     propertiesPane.add(new Text(key), 0, counter);
                     propertiesPane.add(field, 1, counter);
 

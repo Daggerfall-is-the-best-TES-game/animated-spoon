@@ -2,12 +2,11 @@ package org.arsok.app;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.arsok.lib.Controller;
+import org.arsok.lib.FXMLBundleFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,7 +15,7 @@ import java.util.logging.Level;
 
 import static org.arsok.app.Main.instance;
 
-public class Display implements Initializable {
+public class Display extends Controller implements Initializable {
     private final URL propertiesURL = getClass().getResource("/PropertiesDisplay.fxml");
 
     @FXML
@@ -25,11 +24,7 @@ public class Display implements Initializable {
     @FXML
     public void openProperties() {
         try {
-            Parent parent = FXMLLoader.load(propertiesURL);
-            Scene scene = new Scene(parent);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
+            FXMLBundleFactory.newFXMLBundle(propertiesURL, new Stage());
         } catch (IOException e) {
             instance.log(Level.SEVERE, "Failed to open properties", e);
         }
