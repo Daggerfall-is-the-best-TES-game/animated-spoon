@@ -57,6 +57,8 @@ public class Main extends Application {
         }
 
         logger.log(level, builder.toString());
+
+        //TODO: if level is severe, display alert
     }
 
     @Override
