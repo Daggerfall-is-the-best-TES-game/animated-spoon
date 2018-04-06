@@ -43,7 +43,8 @@
             </MenuBar>
          </top>
           <center>
-              <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+              <ScrollPane fx:id="writableImageScrollPane" fitToHeight="true" fitToWidth="true"
+                          BorderPane.alignment="CENTER">
                   <content>
                       <AnchorPane fx:id="pane3d" prefHeight="200.0" prefWidth="200.0">
                           <children>

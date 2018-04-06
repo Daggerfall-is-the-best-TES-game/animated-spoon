@@ -24,6 +24,7 @@ public class FXMLBundleFactory {
 
             controller.setScene(scene);
             controller.setStage(stage);
+            controller.inject();
         }
 
         return bundle;

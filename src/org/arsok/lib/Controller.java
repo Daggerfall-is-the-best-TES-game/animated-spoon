@@ -22,4 +22,7 @@ public class Controller {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+
+    public void inject() {
+    }
 }
