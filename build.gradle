@@ -1,0 +1,16 @@
+group 'arsok'
+version '1.0'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.jblas', name: 'jblas', version: '1.2.4'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
