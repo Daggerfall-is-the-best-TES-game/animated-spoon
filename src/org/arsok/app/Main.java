@@ -108,17 +108,19 @@ public class Main extends Application {
                         Files.createFile(toSave = directory.resolve(strDate + ".alert"));
                     } catch (FileAlreadyExistsException e1) {
                         int counter = 0;
-                        boolean valid = false;
-                        do {
-                            try {
-                                Files.createFile(toSave = directory.resolve(strDate + counter + ".alert"));
-                                valid = true;
-                            } catch (FileAlreadyExistsException e2) {
-                                valid = false;
-                            } catch (IOException e2) {
-                                log(Level.WARNING, "Failed to save alert", e2);
-                            }
-                        } while (!valid);
+                        boolean valid;
+                        try {
+                            do {
+                                try {
+                                    Files.createFile(toSave = directory.resolve(strDate + counter + ".alert"));
+                                    valid = true;
+                                } catch (FileAlreadyExistsException e2) {
+                                    valid = false;
+                                }
+                            } while (!valid);
+                        } catch (IOException e2) {
+                            log(Level.WARNING, "Failed to save alert", e2);
+                        }
                     } catch (IOException e1) {
                         log(Level.WARNING, "Failed to save alert", e1);
                     }
