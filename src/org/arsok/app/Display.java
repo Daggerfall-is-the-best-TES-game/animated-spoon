@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.arsok.lib.Controller;
 import org.arsok.lib.FXMLBundleFactory;
@@ -17,6 +18,9 @@ import static org.arsok.app.Main.instance;
 
 public class Display extends Controller implements Initializable {
     private final URL propertiesURL = getClass().getResource("/PropertiesDisplay.fxml");
+
+    @FXML
+    private AnchorPane pane3d;
 
     @FXML
     private ImageView writableImageView;
@@ -51,5 +55,7 @@ public class Display extends Controller implements Initializable {
         rayTrace.start();
 
         writableImageView.setImage(rayTrace.getImage());
+        writableImageView.fitWidthProperty().bind(pane3d.widthProperty());
+        writableImageView.fitHeightProperty().bind(pane3d.heightProperty());
     }
 }
