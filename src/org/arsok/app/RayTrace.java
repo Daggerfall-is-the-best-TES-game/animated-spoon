@@ -19,11 +19,8 @@ public class RayTrace {
         this.image = new WritableImage(width, height);
         this.writer = image.getPixelWriter();
 
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                writer.setColor(i, j, Color.BLACK);
-            }
-        }
+        Image image = new Image("pexels-photo-110854.jpeg");
+        writer.setPixels(0, 0, width, height, image.getPixelReader(), 0, 0);
     }
 
     public void start() {
@@ -49,6 +46,7 @@ public class RayTrace {
             double xDelta = (image.getWidth() / 2) - x;
             double yDelta = (image.getHeight() / 2) - y;
             double radius = Math.pow(xDelta, 2) + Math.pow(yDelta, 2);
+
             if (Math.abs(xDelta) <= 100 &&
                     Math.abs(yDelta) <= 100 && (radius <= Math.pow(101, 2) && radius >= Math.pow(99, 2))) {
                 writer.setColor(x, y, Color.RED);

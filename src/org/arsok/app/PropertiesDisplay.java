@@ -31,8 +31,6 @@ public class PropertiesDisplay extends Controller implements Initializable {
 
     @FXML
     public void close() {
-        //TODO: figure out closing
-
         /*
         If the user hasn't saved some properties, show an alert box before closing. Otherwise, close naturally.
          */

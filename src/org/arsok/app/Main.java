@@ -1,16 +1,22 @@
 package org.arsok.app;
 
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
+import org.arsok.lib.Alert;
+import org.arsok.lib.FXMLBundle;
 import org.arsok.lib.FXMLBundleFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,7 +25,10 @@ import java.util.logging.Logger;
 
 public class Main extends Application {
     public static Main instance;
+
     private final URL displayURL = getClass().getResource("/Display.fxml");
+    private final URL alertURL = getClass().getResource("/Alert.fxml");
+
     private final ExecutorService service = Executors.newCachedThreadPool();
     private final Logger logger = Logger.getLogger("Application");
     private final Path propertiesPath = Paths.get(".\\.properties");
@@ -55,8 +64,62 @@ public class Main extends Application {
         }
 
         logger.log(level, builder.toString());
+        levelSevere(level, message, e);
+    }
 
-        //TODO: if level is severe, display alert
+    private void levelSevere(Level level, String message, Exception e) {
+        if (level.equals(Level.SEVERE)) {
+            try {
+                FXMLBundle<Parent, Alert> parentObjectFXMLBundle = FXMLBundleFactory.newFXMLBundle(alertURL, new Stage());
+                Alert alert = parentObjectFXMLBundle.getController();
+                if (message != null) {
+                    alert.setMessage(message);
+                }
+
+                if (e != null) {
+                    StringWriter writer = new StringWriter();
+                    e.printStackTrace(new PrintWriter(writer));
+                    alert.setSubMesage(writer.toString());
+                }
+
+                alert.setLocation1(null);
+                alert.setLocation2(null);
+                alert.setOption1("OK", url -> alert.getStage().close());
+                alert.setOption2("Save", url -> {
+                    Path path = Paths.get(".\\logs\\alerts");
+                    try {
+                        Files.createDirectories(path);
+                    } catch (IOException e1) {
+                        log(Level.WARNING, "Failed to create directories", e1);
+                    }
+
+                    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                    Date now = new Date();
+                    String strDate = sdfDate.format(now);
+
+                    try {
+                        Files.createFile(path.resolve(strDate + ".alert"));
+                    } catch (FileAlreadyExistsException e1) {
+                        int counter = 0;
+                        boolean valid = false;
+                        do {
+                            try {
+                                Files.createFile(path.resolve(strDate + counter + ".alert"));
+                                valid = true;
+                            } catch (FileAlreadyExistsException e2) {
+                                valid = false;
+                            } catch (IOException e2) {
+                                log(Level.WARNING, "Failed to save alert", e2);
+                            }
+                        } while (!valid);
+                    } catch (IOException e1) {
+                        log(Level.WARNING, "Failed to save alert", e1);
+                    }
+                });
+            } catch (IOException e1) {
+                log(Level.WARNING, "Unable to load alert", e1);
+            }
+        }
     }
 
     @Override
