@@ -16,11 +16,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class Main extends Application {
@@ -33,6 +34,9 @@ public class Main extends Application {
     private final Logger logger = Logger.getLogger("Application");
     private final Path propertiesPath = Paths.get(".\\.properties");
     private final Properties properties = new Properties();
+    private final SaveHandler handler = new SaveHandler();
+
+    private boolean exceptionLogged = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -58,16 +62,18 @@ public class Main extends Application {
         }
 
         if (e != null) {
+            exceptionLogged = true;
+
             StringWriter writer = new StringWriter();
             e.printStackTrace(new PrintWriter(writer));
             builder.append(writer.toString());
         }
 
         logger.log(level, builder.toString());
-        levelSevere(level, message, e);
+        levelSevere(level, message, e, builder.toString());
     }
 
-    private void levelSevere(Level level, String message, Exception e) {
+    private void levelSevere(Level level, String message, Exception e, String saveContent) {
         if (level.equals(Level.SEVERE)) {
             try {
                 FXMLBundle<Parent, Alert> parentObjectFXMLBundle = FXMLBundleFactory.newFXMLBundle(alertURL, new Stage());
@@ -86,25 +92,26 @@ public class Main extends Application {
                 alert.setLocation2(null);
                 alert.setOption1("OK", url -> alert.getStage().close());
                 alert.setOption2("Save", url -> {
-                    Path path = Paths.get(".\\logs\\alerts");
+                    Path directory = Paths.get(".\\logs\\alerts");
                     try {
-                        Files.createDirectories(path);
+                        Files.createDirectories(directory);
                     } catch (IOException e1) {
                         log(Level.WARNING, "Failed to create directories", e1);
                     }
 
-                    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss-SSS");
                     Date now = new Date();
                     String strDate = sdfDate.format(now);
 
+                    Path toSave = null;
                     try {
-                        Files.createFile(path.resolve(strDate + ".alert"));
+                        Files.createFile(toSave = directory.resolve(strDate + ".alert"));
                     } catch (FileAlreadyExistsException e1) {
                         int counter = 0;
                         boolean valid = false;
                         do {
                             try {
-                                Files.createFile(path.resolve(strDate + counter + ".alert"));
+                                Files.createFile(toSave = directory.resolve(strDate + counter + ".alert"));
                                 valid = true;
                             } catch (FileAlreadyExistsException e2) {
                                 valid = false;
@@ -114,6 +121,23 @@ public class Main extends Application {
                         } while (!valid);
                     } catch (IOException e1) {
                         log(Level.WARNING, "Failed to save alert", e1);
+                    }
+
+                    try {
+                        PrintWriter writer = new PrintWriter(Files.newBufferedWriter(toSave));
+                        writer.println(strDate);
+                        writer.println();
+
+                        System.getProperties().forEach((o, o2) -> writer.println("[" + o.toString() + " - " + o2.toString() + "]"));
+
+                        writer.println();
+                        writer.println();
+                        writer.println(saveContent);
+
+                        writer.flush();
+                        writer.close();
+                    } catch (IOException e1) {
+                        log(Level.WARNING, "Failed to write alert", e1);
                     }
                 });
             } catch (IOException e1) {
@@ -125,6 +149,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         instance = this;
+
+        logger.setLevel(Level.ALL);
+        handler.setLevel(Level.ALL);
+        logger.addHandler(handler);
 
         log(Level.INFO, "Starting application", null);
 
@@ -165,6 +193,79 @@ public class Main extends Application {
             log(Level.WARNING, "Failed to store properties", e);
         }
 
+        if (exceptionLogged) {
+            Path directory = Paths.get(".\\logs\\");
+            try {
+                Files.createDirectories(directory);
+            } catch (IOException e1) {
+                log(Level.WARNING, "Failed to create directories", e1);
+            }
+
+            SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss-SSS");
+            Date now = new Date();
+            String strDate = sdfDate.format(now);
+
+            Path toSave = null;
+            try {
+                Files.createFile(toSave = directory.resolve(strDate + ".alert"));
+            } catch (FileAlreadyExistsException e1) {
+                int counter = 0;
+                boolean valid = false;
+                do {
+                    try {
+                        Files.createFile(toSave = directory.resolve(strDate + counter + ".alert"));
+                        valid = true;
+                    } catch (FileAlreadyExistsException e2) {
+                        valid = false;
+                    } catch (IOException e2) {
+                        log(Level.WARNING, "Failed to save log", e2);
+                    }
+                } while (!valid);
+            } catch (IOException e1) {
+                log(Level.WARNING, "Failed to save log", e1);
+            }
+
+            try {
+                PrintWriter writer = new PrintWriter(Files.newBufferedWriter(toSave));
+                writer.println(strDate);
+                writer.println();
+
+                System.getProperties().forEach((o, o2) -> writer.println("[" + o.toString() + " - " + o2.toString() + "]"));
+
+                writer.println();
+                writer.println();
+
+                List<LogRecord> records = handler.getHandlers();
+                for (LogRecord record : records) {
+                    writer.println("-------------");
+
+                    writer.println(strDate);
+                    writer.println("[" + record.getLevel() + "]: " + record.getMessage());
+                    writer.println(record.getLoggerName());
+                    writer.println(record.getMillis());
+                    writer.println();
+
+                    writer.println(Arrays.toString(record.getParameters()));
+                    writer.println(record.getThreadID());
+
+                    writer.println();
+
+                    writer.println(record.getResourceBundle().toString());
+                    writer.println(record.getSequenceNumber());
+                    writer.println(record.getSourceClassName());
+                    writer.println(record.getSourceMethodName());
+
+                    writer.println();
+                    writer.println("-------------");
+                }
+
+                writer.flush();
+                writer.close();
+            } catch (IOException e1) {
+                log(Level.WARNING, "Failed to write alert", e1);
+            }
+        }
+
         service.shutdown();
 
         if (!service.isShutdown()) {
@@ -178,6 +279,29 @@ public class Main extends Application {
             } catch (InterruptedException e) {
                 System.exit(-1);
             }
+        }
+    }
+
+    private class SaveHandler extends Handler {
+        private List<LogRecord> handlers = new ArrayList<>();
+
+        @Override
+        public void publish(LogRecord record) {
+            handlers.add(record);
+        }
+
+        public List<LogRecord> getHandlers() {
+            return handlers;
+        }
+
+        @Override
+        public void flush() {
+
+        }
+
+        @Override
+        public void close() throws SecurityException {
+
         }
     }
 }
