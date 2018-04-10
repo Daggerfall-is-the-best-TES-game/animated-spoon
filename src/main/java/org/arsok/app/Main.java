@@ -252,7 +252,6 @@ public class Main extends Application {
 
                     writer.println();
 
-                    writer.println(record.getResourceBundle().toString());
                     writer.println(record.getSequenceNumber());
                     writer.println(record.getSourceClassName());
                     writer.println(record.getSourceMethodName());

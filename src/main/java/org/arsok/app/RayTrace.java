@@ -10,6 +10,7 @@ import static org.arsok.app.Main.instance;
 public class RayTrace {
     private final WritableImage image;
     private final PixelWriter writer;
+    private BlackHole blackHole;
 
     public RayTrace() {
         this(1000, 1000);
@@ -19,8 +20,8 @@ public class RayTrace {
         this.image = new WritableImage(width, height);
         this.writer = image.getPixelWriter();
 
-        Image image = new Image("pexels-photo-110854.jpeg");
-        writer.setPixels(0, 0, width, height, image.getPixelReader(), 0, 0);
+/*        Image image = new Image("pexels-photo-110854.jpeg");
+        writer.setPixels(0, 0, width, height, image.getPixelReader(), 0, 0);*/
     }
 
     public void start() {
@@ -29,6 +30,10 @@ public class RayTrace {
 
     public Image getImage() {
         return image;
+    }
+
+    public void bindBlackHole(BlackHole blackHole) {
+        this.blackHole = blackHole;
     }
 
     private class RayTraceRunnable implements Runnable {
