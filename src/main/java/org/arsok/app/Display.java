@@ -30,6 +30,7 @@ public class Display extends Controller implements Initializable {
 
     @FXML
     private ImageView writableImageView;
+    private BlackHole blackHole;
 
     @FXML
     public void openProperties() {
@@ -58,6 +59,7 @@ public class Display extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         RayTrace rayTrace = new RayTrace();
+        rayTrace.bindBlackHole(blackHole);
         rayTrace.start();
 
         writableImageView.setImage(rayTrace.getImage());

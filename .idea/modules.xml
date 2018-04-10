@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/animated-spoon.iml" filepath="$PROJECT_DIR$/.idea/animated-spoon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/animated-spoon.iml" filepath="$PROJECT_DIR$/.idea/modules/animated-spoon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/animated-spoon_main.iml" filepath="$PROJECT_DIR$/.idea/modules/animated-spoon_main.iml" group="animated-spoon" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/animated-spoon_test.iml" filepath="$PROJECT_DIR$/.idea/modules/animated-spoon_test.iml" group="animated-spoon" />
     </modules>
   </component>
 </project>
