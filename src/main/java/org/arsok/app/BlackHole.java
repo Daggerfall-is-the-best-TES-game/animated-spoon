@@ -9,6 +9,11 @@ public class BlackHole {
 
     }
 
+    public BlackHole() {
+        this.mass = 1e31; //default value of mass of black hole in Kilograms
+
+    }
+
     public double getMass() {
         return mass;
     }
