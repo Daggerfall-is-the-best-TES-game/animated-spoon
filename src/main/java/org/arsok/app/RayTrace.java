@@ -38,26 +38,58 @@ public class RayTrace {
 
     //separate thread for running the program
     private class RayTraceRunnable implements Runnable {
-        //units of space are all in meters
-        double xPosition = 0; //x is left(-) and right(+) position coordinate
-        double zPosition = -50; //z is towards(+) black hole and away(-) position coordinate
-        double xWaveVelocity = 10; //direction of the propagation of light in the x direction
-        double zWaveVelocity = 50; //direction of the propagation of light in the z direction
-        //double waveNumber = 100; //temporary value until I figure out which value it must have. maybe the magnitude of k?
-        double[] Y = {xPosition, zPosition, xWaveVelocity, zWaveVelocity};  //packaged up for your convenience
+
 
         private RayTraceRunnable() {
 
         }
-        double M = blackHole.getMass(); //mass in kilograms
-        double G = 6.67408e-11;
-        //c = 1
-        double schwarzschildRadius = 2 * M * G; // in meters
+
+        //Project Plan V2 with https://arxiv.org/pdf/0804.4112.pdf
+        double rSubZero = 1e5; //radius- 100 kilometers away from black hole
+        double theta = 0.5; //radians- temp value. angle between path of photon and radius vector of black hole
+        double rSubg = 2 * blackHole.getMass(); //Schwarzschild radius in meters
+        double n = 1; //number of dimensions including time - 3
+        double qSubStar = Math.pow(2 / (n + 2), 1 / n); //position that gives minimum of lSubmax
+        double lambda = rSubZero * Math.sin(theta); //impact parameter
+        double l = lambda / rSubg;
+
+        //bending angle of light ray. This is a big deal
+        private double phi(double rSubZero, double theta) {
+
+            double qSubZero = q(rSubZero); //dimensionless quantity
+
+
+            double P = Math.pow(p(rSubZero), n); //fixed
+            double B = Math.pow(nu(rSubZero), 2); //fixed
+
+            return 0; //temp
+        }
+
+        private double q(double radius) { //dimensionless radius
+            return rSubg / radius;
+        }
+
+        private double y(double radius) {
+            return 1 - rSubZero / radius;
+        }
+
+        private double p(double radius) {
+            return q(radius) / qSubStar;
+        }
+
+        private double lSubmax(double radius) {
+            return 1.0 / (q(radius) * Math.sqrt(1 - Math.pow(q(radius), n)));
+        }
+
+        private double nu(double radius) {
+            return l / lSubmax(radius);
+        }
+
 
         @Override
         public void run() {
 
-            rungeKutta(0.1, Y);
+            phi(rSubZero, theta);
 
             /*
             for (int i = 0; i < image.getWidth(); i++) {
@@ -68,66 +100,7 @@ public class RayTrace {
             */
         }
 
-        /*raytracing equations:
-        formula 19 in:
-        https://arxiv.org/ftp/arxiv/papers/1001/1001.2177.pdf
-        k is the wavevector
-        r is the magnitude of the radius magnitude(<xPosition, zPosition>)
-        Φ is a the negative of the ratio of the Schwarzschild radius to r
-        ψ is the angle between the wavevector k and the radius vector r
-        */
-        private double[] pathFunction(double x, double[] Y) {
-            double[] r = new double[]{Y[0], Y[1]};
-            double[] k = new double[]{Y[2], Y[3]};
-            double radius = Math.sqrt(xPosition * xPosition + zPosition * zPosition);
-            double Phi = -schwarzschildRadius / radius;
-            //https://www.mathworks.com/matlabcentral/answers/101590-how-can-i-determine-the-angle-between-two-vectors-in-matlab?requestedDomain=true
-            double angle = angleBetweenVectors(r, k);
-            double y11 = 2 * x * Phi * Math.cos(angle) / radius;
-            double y12 = 2 * (1 + Phi);
-            double y21 = x * x * Phi * (1 + 3 * Math.cos(angle) * Math.cos(angle)) / (radius * radius);
-            double y22 = -2 * x * Phi * Math.cos(angle) / radius;
-            double[] answer = new double[4]; //temporary
-            //answer = {rx, rz, kx, kz}
-            answer[0] = r[0] * y11 + k[0] * y12;
-            answer[1] = r[1] * y11 + k[1] * y12;
-            answer[2] = r[0] * y21 + k[0] * y22;
-            answer[3] = r[1] * y21 + k[1] * y22;
-            return answer;
-        }
 
-        /*step is the stepsize for the algorithm
-        fourth order Runge-Kutta
-
-         */
-        private double[] rungeKutta(double step, double[] initConditions) {
-            //increments
-            double[] k1;
-            double[] k2;
-            double[] k3;
-            double[] k4;
-            for (double i = 0; i < 1; i += step) {
-                k1 = arrayScalarMult(step, pathFunction(i, initConditions));
-                k2 = arrayScalarMult(step, pathFunction(i + 0.5 * step, arrayAdd(arrayScalarMult(0.5, k1), initConditions)));
-                k3 = arrayScalarMult(step, pathFunction(i + 0.5 * step, arrayAdd(arrayScalarMult(0.5, k2), initConditions)));
-                k4 = arrayScalarMult(step, pathFunction(i + step, arrayAdd(k3, initConditions)));
-
-
-                double[] part1 = arrayAdd(k1, arrayScalarMult(2, k2));
-                double[] part2 = arrayAdd(part1, arrayScalarMult(2, k3));
-                double[] part3 = arrayScalarMult(1 / 6, arrayAdd(part2, k4));
-                initConditions = arrayAdd(initConditions, part3);
-                System.out.println("xradius" + initConditions[0]);
-                System.out.println("zradius" + initConditions[1]);
-                System.out.println("xwave" + initConditions[2]);
-                System.out.println("zwave" + initConditions[3]);
-
-            }
-
-
-            return initConditions;
-
-        }
 
 
         private void stereographicProjection() {
@@ -189,9 +162,6 @@ public class RayTrace {
             return a;
         }
 
-
-        //Project Plan V2 with https://arxiv.org/pdf/0804.4112.pdf
-        //blah
 
 
     }
