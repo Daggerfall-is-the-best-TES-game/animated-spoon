@@ -30,7 +30,7 @@ public class Display extends Controller implements Initializable {
 
     @FXML
     private ImageView writableImageView;
-    private BlackHole blackHole;
+    private BlackHole blackHole = new BlackHole(1e31);
 
     @FXML
     public void openProperties() {
