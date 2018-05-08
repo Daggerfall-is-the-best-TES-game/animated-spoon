@@ -50,6 +50,7 @@ public class RayTrace {
         //bending angle of light ray. This is a big deal
         //The bending angle is the angle between the initial trajectory of the light ray and the radius vector(tail at black hole, head at photon)
         //Note that this means that vector trajectories
+        /*
         private double phi(double rSubZero, double theta) {
             double wavelength = 0.65e-6;//wavelength of light. hardcoded for now
             double rSubg = Math.sqrt((blackHole.getMass() * wavelength) / (2 * Math.PI)); //gravitational radius in meters http://www.journaloftheoretics.com/articles/4-1/kanarev-gravradbh.pdf
@@ -119,6 +120,16 @@ public class RayTrace {
                 return 0;
             }
             return 1;
+        }
+        */
+
+
+        //bending angle of light ray. This is a big deal
+        //The bending angle is the angle between the initial trajectory of the light ray and the radius vector(tail at black hole, head at photon)
+        //Note that this means that vector trajectories
+        //using formulas 27 and 23 from https://arxiv.org/pdf/gr-qc/0611086.pdf
+        private double phi(double rSubZero, double theta) {
+
         }
 
 
