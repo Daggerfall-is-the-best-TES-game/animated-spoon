@@ -44,14 +44,18 @@ public class RayTrace {
 
         }
 
-        //Project Plan V2 with https://arxiv.org/pdf/0804.4112.pdf
-        double rSubZero = 1e5; //radius- 100 kilometers away from black hole
-        double theta = 0.5; //radians- temp value. angle between path of photon and radius vector of black hole
+
 
 
         //bending angle of light ray. This is a big deal
+        //The bending angle is the angle between the initial trajectory of the light ray and the radius vector(tail at black hole, head at photon)
+        //Note that this means that vector trajectories
         private double phi(double rSubZero, double theta) {
-            double rSubg = 2 * blackHole.getMass(); //Schwarzschild radius in meters
+            double wavelength = 0.65e-6;//wavelength of light. hardcoded for now
+            double rSubg = Math.sqrt((blackHole.getMass() * wavelength) / (2 * Math.PI)); //gravitational radius in meters http://www.journaloftheoretics.com/articles/4-1/kanarev-gravradbh.pdf
+
+            //double rSubg = Math.pow((16 * Math.PI * blackHole.getMass()) / (2 * ((2 * Math.pow(Math.PI, 3.0/2)) / (0.8862269254))), 1.0/4);  //testing alternate forumla. prob wrong
+
             double n = 1; //number of dimensions including time - 3
             double qSubStar = Math.pow(2 / (n + 2), 1 / n); //position that gives minimum of lSubmax
             double lambda = rSubZero * Math.sin(theta); //impact parameter
@@ -59,6 +63,7 @@ public class RayTrace {
 
             double qSubZero = q(rSubZero, rSubg); //dimensionless quantity
             double pSubZero = qSubZero / qSubStar;
+
 
             double nu = l / (1.0 / ((rSubg / rSubZero) * Math.sqrt(1 - Math.pow((rSubg / rSubZero), n))));
 
@@ -68,7 +73,7 @@ public class RayTrace {
 
             if (qSubZero <= qSubStar) { // Type I rays bending angle. formula (50) in paper
                 double P = Math.pow(p(rSubZero, qSubStar, rSubg), n); //fixed
-                double B = Math.pow(nu(rSubZero, rSubg, n, l), 2); //fixed
+                double B = Math.pow(nu, 2); //fixed
                 double a = (1 - B) * (1 - (2 * P) / (n + 2));
                 double b = B * (1 - P);
                 double c = -B * (1 - (n + 1) * P);
@@ -104,21 +109,10 @@ public class RayTrace {
             return rSubg / radius;
         }
 
-        private double y(double radius) {
-            return 1 - rSubZero / radius;
-        }
-
         private double p(double radius, double qSubStar, double rSubg) {
             return q(radius, rSubg) / qSubStar;
         }
 
-        private double lSubmax(double radius, double rSubg, double n) {
-            return 1.0 / (q(radius, rSubg) * Math.sqrt(1 - Math.pow(q(radius, rSubg), n)));
-        }
-
-        private double nu(double radius, double rSubg, double n, double l) {
-            return l / lSubmax(radius, rSubg, n);
-        }
 
         private double heavisideStepFunction(double n) {
             if (n <= 0) {
@@ -130,9 +124,13 @@ public class RayTrace {
 
         @Override
         public void run() {
-
-            phi(rSubZero, theta);
-
+            //Project Plan V2 with https://arxiv.org/pdf/0804.4112.pdf
+            double rSubZero = 2e12; //radius
+            double theta = 2; //radians- temp value. angle between path of photon and radius vector of black hole
+            //testing the output of the phi function, which is the bending angle
+            for (double i = 0; i < Math.PI * 2; i += Math.PI / 100) {
+                System.out.format("emission angle (degrees): %.1f Phi (degrees): %.1f%n", Math.toDegrees(i), Math.toDegrees(phi(rSubZero, i)));
+            }
             /*
             for (int i = 0; i < image.getWidth(); i++) {
                 for (int j = 0; j < image.getHeight(); j++) {
