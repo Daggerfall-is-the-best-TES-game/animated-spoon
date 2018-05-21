@@ -16,7 +16,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Handler;
@@ -33,7 +36,7 @@ public class Main extends Application {
     private final ExecutorService service = Executors.newCachedThreadPool();
     private final Logger logger = Logger.getLogger("Application");
     private final Path propertiesPath = Paths.get(".\\.properties");
-    private final Properties properties = new Properties();
+    private final Settings settings = new Settings();
     private final SaveHandler handler = new SaveHandler();
 
     private boolean exceptionLogged = false;
@@ -46,8 +49,8 @@ public class Main extends Application {
         return service;
     }
 
-    public Properties getProperties() {
-        return properties;
+    public Settings getSettings() {
+        return settings;
     }
 
     public void log(Level level, String message, Exception e) {
@@ -165,7 +168,7 @@ public class Main extends Application {
     private void loadProperties() {
         try {
             if (Files.exists(propertiesPath)) {
-                properties.load(Files.newInputStream(propertiesPath));
+                settings.load(Files.newInputStream(propertiesPath));
             } else {
                 //TODO: load default properties
             }
@@ -190,7 +193,8 @@ public class Main extends Application {
             if (!Files.exists(propertiesPath)) {
                 Files.createFile(propertiesPath);
             }
-            properties.store(Files.newOutputStream(propertiesPath), null);
+
+            settings.store(Files.newOutputStream(propertiesPath));
         } catch (IOException e) {
             log(Level.WARNING, "Failed to store properties", e);
         }
