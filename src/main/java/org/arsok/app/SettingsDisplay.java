@@ -15,24 +15,23 @@ import org.arsok.lib.FXMLBundleFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
-public class PropertiesDisplay extends Controller implements Initializable {
+public class SettingsDisplay extends Controller implements Initializable {
     private final HashMap<String, TextField> fields = new HashMap<>();
     private final URL alertURL = getClass().getResource("/Alert.fxml");
 
     @FXML
     private GridPane propertiesPane;
-    private Properties properties;
+    private Settings settings;
     private boolean changed = false;
 
     @FXML
     public void close() {
         /*
-        If the user hasn't saved some properties, show an alert box before closing. Otherwise, close naturally.
+        If the user hasn't saved some settings, show an alert box before closing. Otherwise, close naturally.
          */
 
         if (changed) {
@@ -60,25 +59,25 @@ public class PropertiesDisplay extends Controller implements Initializable {
 
     @FXML
     public void updateProperties() {
-        fields.forEach((s, textField) -> properties.setProperty(s, textField.getText()));
+        fields.forEach((s, textField) -> settings.updateValue(s, textField.getText()));
 
         changed = false;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        properties = Main.instance.getProperties();
-        if (properties.size() == 0) {
-            propertiesPane.add(new Text("No properties found"), 0, 0);
-            propertiesPane.add(new Text("No properties found"), 1, 0);
+        settings = Main.instance.getSettings();
+        if (settings.size() == 0) {
+            propertiesPane.add(new Text("No settings found"), 0, 0);
+            propertiesPane.add(new Text("No settings found"), 1, 0);
         } else {
-            properties.keySet().forEach(new Consumer<Object>() {
+            settings.getNames().forEach(new Consumer<Object>() {
                 int counter = 0;
 
                 @Override
                 public void accept(Object o) {
                     String key = (String) o;
-                    String value = properties.getProperty(key);
+                    String value = settings.getValue(key);
 
                     TextField field = new TextField(value);
                     field.textProperty()
