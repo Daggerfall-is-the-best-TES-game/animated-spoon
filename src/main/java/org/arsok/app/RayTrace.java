@@ -134,13 +134,14 @@ public class RayTrace {
             double c = 299792458; //https://en.wikipedia.org/wiki/Speed_of_light
             double mDot = G * blackHole.getMass() / (c * c); //https://en.wikipedia.org/wiki/Schwarzschild_radius
             double b = Math.abs(rSubZero * Math.sin(theta)); //impact parameter
+            double btest = (rSubZero * Math.sin((Math.PI - theta))) / Math.sqrt(1 - mDot / rSubZero); //alternate, possibly more accurate formula for the impact parameter from BELOBORODOV
             double bCritical = 3 * Math.sqrt(3) * mDot; //critical impact parameter
 
-            if (b < bCritical) {
+            if (btest < bCritical) {
                 return Double.NaN;
             }
 
-            double bPrime = 1 - (bCritical / b); //invariant paramter
+            double bPrime = 1 - (bCritical / btest); //invariant paramter
 
 
             System.out.format("b: %.2f", bPrime);
@@ -168,6 +169,7 @@ public class RayTrace {
         public void run() {
             //Project Plan V2 with https://arxiv.org/pdf/0804.4112.pdf
             double rSubZero = 3 * Math.sqrt(3) * 6.67408e-11 * blackHole.getMass() / (299792458.0 * 299792458) * 1.5; //radius
+            //double rSubZero = 30 * blackHole.getMass();
             //testing the output of the phi function, which is the bending angle
             for (double i = 0; i < Math.PI * 2; i += Math.PI / 100) {
                 System.out.format("emission angle (degrees): %.1f Phi (degrees): %.1f%n", Math.toDegrees(i), Math.toDegrees(phi(rSubZero, i)));
