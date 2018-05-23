@@ -28,7 +28,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class Main extends Application {
-    public static Main instance;
+    static Main instance;
 
     private final URL displayURL = getClass().getResource("/Display.fxml");
     private final URL alertURL = getClass().getResource("/Alert.fxml");
@@ -45,11 +45,11 @@ public class Main extends Application {
         launch(args);
     }
 
-    public ExecutorService getService() {
+    ExecutorService getService() {
         return service;
     }
 
-    public Settings getSettings() {
+    Settings getSettings() {
         return settings;
     }
 

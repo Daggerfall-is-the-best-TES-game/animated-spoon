@@ -65,7 +65,7 @@ public class Display extends Controller implements Initializable {
         rayTrace.bindBlackHole(blackHole);
         rayTrace.start();
 
-        Main.instance.getSettings().getSetting("Background Image").valueProperty().addListener((observable, oldValue, newValue) -> {
+        instance.getSettings().getSetting("Background Image").valueProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 rayTrace.setBackgroundImage(new Image(Files.newInputStream(Paths.get(newValue))));
             } catch (IOException e) {
