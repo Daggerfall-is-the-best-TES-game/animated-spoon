@@ -170,7 +170,7 @@ public class Main extends Application {
             if (Files.exists(propertiesPath)) {
                 settings.load(Files.newInputStream(propertiesPath));
             } else {
-                settings.setValue("Background Image", "mwpan2_watermarked.jpg");
+                settings.setValue("backgroundImage", "mwpan2_watermarked.jpg");
             }
         } catch (IOException e) {
             log(Level.WARNING, "Failed to load properties", e);
