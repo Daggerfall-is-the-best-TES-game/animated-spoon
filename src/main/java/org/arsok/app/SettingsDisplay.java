@@ -23,6 +23,7 @@ import java.util.logging.Level;
 
 import static javafx.scene.layout.GridPane.setHalignment;
 import static javafx.scene.layout.GridPane.setValignment;
+import static org.arsok.app.Main.instance;
 
 public class SettingsDisplay extends Controller implements Initializable {
     private final HashMap<String, TextField> fields = new HashMap<>();
@@ -54,7 +55,7 @@ public class SettingsDisplay extends Controller implements Initializable {
                 });
                 alert.setOption2("Yes", url -> alert.getStage().close());
             } catch (IOException e) {
-                Main.instance.log(Level.WARNING, "Failed to load alert", e);
+                instance.getConsole().log(Level.WARNING, "Failed to load alert", e);
             }
         } else {
             //close normally
@@ -71,7 +72,7 @@ public class SettingsDisplay extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        settings = Main.instance.getSettings();
+        settings = instance.getSettings();
         if (settings.size() == 0) {
             Text t1 = new Text("No settings found");
             Text t2 = new Text("No settings found");

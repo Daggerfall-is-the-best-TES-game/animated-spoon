@@ -28,6 +28,6 @@ public class Setting {
     }
 
     public enum SettingType {
-
+        //TODO: settingsType
     }
 }

@@ -3,6 +3,7 @@ package org.arsok.app;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
@@ -88,6 +89,17 @@ public class RayTrace {
 
         @Override
         public void run() {
+            PixelReader backgroundReader = backgroundImage.get().getPixelReader();
+            int backgroundX = 0;
+            int backgroundY = 0;
+
+            //TODO: compute background coordinates
+
+            for (int x = 0; x < image.getWidth(); x++) {
+                for (int y = 0; y < image.getHeight(); y++) {
+                    writer.setColor(x, y, backgroundReader.getColor(backgroundX, backgroundY));
+                }
+            }
         }
     }
 }
