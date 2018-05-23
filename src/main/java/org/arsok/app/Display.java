@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import static org.arsok.app.Main.instance;
 
 public class Display extends Controller implements Initializable {
-    private final URL propertiesURL = getClass().getResource("/PropertiesDisplay.fxml");
+    private final URL propertiesURL = getClass().getResource("/SettingsDisplay.fxml");
 
     @FXML
     private ScrollPane writableImageScrollPane;

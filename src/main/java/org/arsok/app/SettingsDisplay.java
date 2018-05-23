@@ -2,6 +2,8 @@ package org.arsok.app;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -18,6 +20,9 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.logging.Level;
+
+import static javafx.scene.layout.GridPane.setHalignment;
+import static javafx.scene.layout.GridPane.setValignment;
 
 public class SettingsDisplay extends Controller implements Initializable {
     private final HashMap<String, TextField> fields = new HashMap<>();
@@ -68,8 +73,16 @@ public class SettingsDisplay extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         settings = Main.instance.getSettings();
         if (settings.size() == 0) {
-            propertiesPane.add(new Text("No settings found"), 0, 0);
-            propertiesPane.add(new Text("No settings found"), 1, 0);
+            Text t1 = new Text("No settings found");
+            Text t2 = new Text("No settings found");
+            propertiesPane.add(t1, 0, 0);
+            propertiesPane.add(t2, 1, 0);
+
+            setHalignment(t1, HPos.CENTER);
+            setValignment(t1, VPos.CENTER);
+            setHalignment(t2, HPos.CENTER);
+            setValignment(t2, VPos.CENTER);
+
         } else {
             settings.getNames().forEach(new Consumer<Object>() {
                 int counter = 0;
@@ -79,13 +92,18 @@ public class SettingsDisplay extends Controller implements Initializable {
                     String key = (String) o;
                     String value = settings.getValue(key);
 
+                    Text keyText = new Text(key);
                     TextField field = new TextField(value);
                     field.textProperty()
                             .addListener((observable, oldValue, newValue) -> changed = true);
 
-                    //TODO: center nodes
-                    propertiesPane.add(new Text(key), 0, counter);
+                    propertiesPane.add(keyText, 0, counter);
                     propertiesPane.add(field, 1, counter);
+
+                    setHalignment(keyText, HPos.CENTER);
+                    setValignment(keyText, VPos.CENTER);
+                    setHalignment(field, HPos.CENTER);
+                    setValignment(field, VPos.CENTER);
 
                     fields.put(key, field);
                 }
