@@ -170,7 +170,7 @@ public class Main extends Application {
             if (Files.exists(propertiesPath)) {
                 settings.load(Files.newInputStream(propertiesPath));
             } else {
-                //TODO: load default properties
+                settings.setValue("Background Image", "mwpan2_watermarked.jpg");
             }
         } catch (IOException e) {
             log(Level.WARNING, "Failed to load properties", e);
@@ -221,8 +221,6 @@ public class Main extends Application {
                     try {
                         Files.createFile(toSave = directory.resolve(strDate + counter + ".alert"));
                         valid = true;
-                    } catch (FileAlreadyExistsException e2) {
-                        valid = false;
                     } catch (IOException e2) {
                         log(Level.WARNING, "Failed to save log", e2);
                     }

@@ -1,5 +1,7 @@
 package org.arsok.app;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -7,6 +9,7 @@ import javafx.scene.image.WritableImage;
 import static org.arsok.app.Main.instance;
 
 public class RayTrace {
+    private final ObjectProperty<Image> backgroundImage = new SimpleObjectProperty<>();
     private final WritableImage image;
 
     //TODO: handle writer
@@ -21,6 +24,18 @@ public class RayTrace {
         this.image = new WritableImage(width, height);
         this.writer = image.getPixelWriter();
         //temporary hardcoded assignment of blackhole for testing purposes
+    }
+
+    public Image getBackgroundImage() {
+        return backgroundImage.get();
+    }
+
+    public void setBackgroundImage(Image backgroundImage) {
+        this.backgroundImage.set(backgroundImage);
+    }
+
+    public ObjectProperty<Image> backgroundImageProperty() {
+        return backgroundImage;
     }
 
     public void start() {

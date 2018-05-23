@@ -64,7 +64,7 @@ public class SettingsDisplay extends Controller implements Initializable {
 
     @FXML
     public void updateProperties() {
-        fields.forEach((s, textField) -> settings.updateValue(s, textField.getText()));
+        fields.forEach((s, textField) -> settings.setValue(s, textField.getText()));
 
         changed = false;
     }

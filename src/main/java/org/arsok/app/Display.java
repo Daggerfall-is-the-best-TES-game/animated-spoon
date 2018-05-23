@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -14,6 +15,8 @@ import org.arsok.lib.FXMLBundleFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 
@@ -61,6 +64,15 @@ public class Display extends Controller implements Initializable {
         RayTrace rayTrace = new RayTrace();
         rayTrace.bindBlackHole(blackHole);
         rayTrace.start();
+
+        Main.instance.getSettings().getSetting("Background Image").valueProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                rayTrace.setBackgroundImage(new Image(Files.newInputStream(Paths.get(newValue))));
+            } catch (IOException e) {
+                //TODO: handle e
+                e.printStackTrace();
+            }
+        });
 
         writableImageView.setImage(rayTrace.getImage());
         writableImageView.fitWidthProperty().bind(pane3d.widthProperty());

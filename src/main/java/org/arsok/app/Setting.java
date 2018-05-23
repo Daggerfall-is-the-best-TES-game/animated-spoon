@@ -1,8 +1,11 @@
 package org.arsok.app;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Setting {
     private final String name;
-    private String value;
+    private final StringProperty value = new SimpleStringProperty();
 
     public Setting(String name) {
         this.name = name;
@@ -13,11 +16,15 @@ public class Setting {
     }
 
     public String getValue() {
-        return value;
+        return value.get();
     }
 
     public void setValue(String value) {
-        this.value = value;
+        this.value.set(value);
+    }
+
+    public StringProperty valueProperty() {
+        return value;
     }
 
     public enum SettingType {
