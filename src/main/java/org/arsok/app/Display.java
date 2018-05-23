@@ -40,7 +40,7 @@ public class Display extends Controller implements Initializable {
         try {
             FXMLBundleFactory.newFXMLBundle(propertiesURL, new Stage());
         } catch (IOException e) {
-            instance.log(Level.SEVERE, "Failed to open properties", e);
+            instance.getConsole().log(Level.SEVERE, "Failed to open properties", e);
         }
     }
 

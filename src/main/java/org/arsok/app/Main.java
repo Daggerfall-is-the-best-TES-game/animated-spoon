@@ -208,6 +208,10 @@ public class Main extends Application {
         }
     }
 
+    public Console getConsole() {
+        return console;
+    }
+
     private class SaveHandler extends Handler {
         private List<LogRecord> handlers = new ArrayList<>();
 

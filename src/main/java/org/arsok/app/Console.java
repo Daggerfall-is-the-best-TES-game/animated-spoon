@@ -51,7 +51,9 @@ public class Console {
         }
 
         logger.log(level, builder.toString());
-        levelSevere(level, message, e, builder.toString());
+        if (level.equals(Level.SEVERE)) {
+            levelSevere(level, message, e, builder.toString());
+        }
     }
 
     public Logger getLogger() {
