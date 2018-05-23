@@ -38,6 +38,9 @@ public class RayTrace {
         this.blackHole = blackHole;
     }
 
+    public void setBackgroundImage(Image image) {
+        backgroundImage.setValue(image);
+    }
 
     //separate thread for running the program
     private class RayTraceRunnable implements Runnable {
