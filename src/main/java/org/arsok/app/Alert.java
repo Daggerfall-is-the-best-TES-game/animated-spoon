@@ -1,4 +1,4 @@
-package org.arsok.lib;
+package org.arsok.app;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

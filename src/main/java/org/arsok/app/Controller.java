@@ -1,4 +1,4 @@
-package org.arsok.lib;
+package org.arsok.app;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;

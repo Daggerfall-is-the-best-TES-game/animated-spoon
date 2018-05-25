@@ -1,26 +1,25 @@
 package org.arsok.app;
 
+import com.meti.lib.asset.AssetManager;
+import com.meti.lib.fx.FXBundle;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import org.arsok.lib.Controller;
-import org.arsok.lib.FXMLBundleFactory;
 
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 
-import static org.arsok.app.Main.instance;
+import static com.meti.lib.Environment.getMainInstance;
 
 public class Display extends Controller implements Initializable {
     private final URL propertiesURL = getClass().getResource("/SettingsDisplay.fxml");
@@ -37,11 +36,10 @@ public class Display extends Controller implements Initializable {
 
     @FXML
     public void openProperties() {
-        try {
-            FXMLBundleFactory.newFXMLBundle(propertiesURL, new Stage());
-        } catch (IOException e) {
-            instance.getConsole().log(Level.SEVERE, "Failed to open properties", e);
-        }
+        FXBundle<SettingsDisplay> bundle = AssetManager.<FXBundle<SettingsDisplay>>firstNameContains("SettingsDisplay.fxml").getContent();
+
+        getMainInstance().getStages().get(0).setScene(new Scene(bundle.getParent()));
+        getMainInstance().getStages().get(0).show();
     }
 
     @FXML
@@ -51,12 +49,12 @@ public class Display extends Controller implements Initializable {
 
     @FXML
     public void openWiki() {
-        instance.getHostServices().showDocument("https://github.com/Arsok/animated-spoon/wiki");
+        getMainInstance().getHostServices().showDocument("https://github.com/Arsok/animated-spoon/wiki");
     }
 
     @FXML
     public void openError() {
-        instance.getHostServices().showDocument("https://github.com/Arsok/animated-spoon/issues/new");
+        getMainInstance().getHostServices().showDocument("https://github.com/Arsok/animated-spoon/issues/new");
     }
 
     @Override
@@ -65,7 +63,7 @@ public class Display extends Controller implements Initializable {
         rayTrace.bindBlackHole(blackHole);
         rayTrace.start();
 
-        instance.getSettings().getSetting("backgroundImage").valueProperty().addListener((observable, oldValue, newValue) -> {
+        ((Main) getMainInstance()).getSettings().getSetting("backgroundImage").valueProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 rayTrace.setBackgroundImage(new Image(Files.newInputStream(Paths.get(newValue))));
             } catch (IOException e) {

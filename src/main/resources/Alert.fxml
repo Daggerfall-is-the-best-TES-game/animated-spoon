@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/9.0.1" fx:controller="org.arsok.lib.Alert">
+            xmlns="http://javafx.com/javafx/9.0.1" fx:controller="org.arsok.app.Alert">
     <children>
         <GridPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
