@@ -12,9 +12,13 @@ public class Settings {
         String line;
         while ((line = reader.readLine()) != null) {
             String[] args = line.split(" ");
-            Setting setting = new Setting(args[0]);
-            setting.setValue(args[1]);
-            settings.put(args[0], setting);
+            if (args.length == 2) {
+                Setting setting = new Setting(args[0]);
+                setting.setValue(line.substring(args[0].length() + 1, line.length()));
+                settings.put(args[0], setting);
+            } else {
+                throw new IOException("The properties file might be broken at " + line);
+            }
         }
 
         reader.close();
@@ -26,6 +30,15 @@ public class Settings {
 
         writer.flush();
         writer.close();
+    }
+
+    public boolean setValueIfNotContains(String name, String value) {
+        if (!settings.containsKey(name)) {
+            setValue(name, value);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void setValue(String name, String value) {

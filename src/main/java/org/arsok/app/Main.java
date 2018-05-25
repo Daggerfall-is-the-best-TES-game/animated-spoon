@@ -1,12 +1,13 @@
 package org.arsok.app;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import org.arsok.lib.FXMLBundleFactory;
+import com.meti.lib.Environment;
+import com.meti.lib.asset.AssetManager;
+import com.meti.lib.asset.builder.FXBuilder;
+import com.meti.lib.fx.FXBundle;
+import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,92 +17,88 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-public class Main extends Application {
-    static Main instance;
+import static com.meti.lib.asset.AssetManager.addAssetBuilder;
+import static com.meti.lib.asset.AssetManager.load;
 
-    private final URL displayURL = getClass().getResource("/Display.fxml");
-
-    private final ExecutorService service = Executors.newCachedThreadPool();
+public class Main extends Environment {
     private final Path propertiesPath = Paths.get(".\\.properties");
     private final Settings settings = new Settings();
     private final SaveHandler handler = new SaveHandler();
-    private final Console console = new Console();
-
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    ExecutorService getService() {
-        return service;
-    }
-
-    Settings getSettings() {
+    public Settings getSettings() {
         return settings;
     }
 
+    @Override
+    public void stop() {
+        getConsole().log(Level.INFO, "Stopping application", null);
+
+        saveProperties();
+        saveLog();
+    }
 
     @Override
-    public void start(Stage primaryStage) {
-        instance = this;
+    public void stopApp() {
+        super.stopApp();
+    }
 
-        console.getLogger().setLevel(Level.ALL);
+    @Override
+    public void startApp() {
+/*        getConsole().getLogger().setLevel(Level.ALL);
         handler.setLevel(Level.ALL);
-        console.getLogger().addHandler(handler);
+        getConsole().getLogger().addHandler(handler);*/
 
-        console.log(Level.INFO, "Starting application", null);
+        getConsole().log(Level.INFO, "Starting application", null);
+
+        defaultBuilders();
 
         loadProperties();
-        loadDisplay(primaryStage);
+        loadDisplay();
+    }
+
+    private void defaultBuilders() {
+        addAssetBuilder(new FXBuilder());
+    }
+
+    private void loadDisplay() {
+        load(getClass().getResource("/Display.fxml"));
+        load(getClass().getResource("/SettingsDisplay.fxml"));
+        load(getClass().getResource("/Alert.fxml"));
+        FXBundle<Display> bundle = AssetManager.<FXBundle<Display>>firstNameContains("Display.fxml").getContent();
+
+        getStages().get(0).setScene(new Scene(bundle.getParent()));
+        getStages().get(0).show();
     }
 
     private void loadProperties() {
         try {
             if (Files.exists(propertiesPath)) {
                 settings.load(Files.newInputStream(propertiesPath));
-            } else {
-                settings.setValue("backgroundImage", "mwpan2_watermarked.jpg");
             }
+
+            settings.setValueIfNotContains("backgroundImage", "mwpan2_watermarked.jpg");
         } catch (IOException e) {
-            console.log(Level.WARNING, "Failed to load properties", e);
+            getConsole().log(Level.WARNING, "Failed to load properties", e);
         }
-    }
-
-    private void loadDisplay(Stage primaryStage) {
-        try {
-            FXMLBundleFactory.newFXMLBundle(displayURL, primaryStage);
-        } catch (IOException e) {
-            console.log(Level.SEVERE, "Failed to load display", e);
-        }
-    }
-
-    @Override
-    public void stop() {
-        console.log(Level.INFO, "Stopping application", null);
-
-        saveProperties();
-        saveLog();
-
-        shutdownService();
     }
 
     private void saveLog() {
-        if (console.isExceptionLogged()) {
-            Path directory = getLoggingDirectory();
-            String strDate = getDate();
-            Path toSave = getPath(directory, strDate);
+        Path directory = getLoggingDirectory();
+        String strDate = getDate();
+        Path toSave = getPath(directory, strDate);
 
-            try {
-                writeLog(strDate, toSave);
-            } catch (IOException e1) {
-                console.log(Level.WARNING, "Failed to write alert", e1);
-            }
+        try {
+            writeLog(strDate, toSave);
+        } catch (IOException e1) {
+            getConsole().log(Level.WARNING, "Failed to write alert", e1);
         }
     }
 
@@ -117,11 +114,11 @@ public class Main extends Application {
                     Files.createFile(toSave = directory.resolve(strDate + counter + ".alert"));
                     valid = true;
                 } catch (IOException e2) {
-                    console.log(Level.WARNING, "Failed to save console.log", e2);
+                    getConsole().log(Level.WARNING, "Failed to save getConsole().log", e2);
                 }
             } while (!valid);
         } catch (IOException e1) {
-            console.log(Level.WARNING, "Failed to save console.log", e1);
+            getConsole().log(Level.WARNING, "Failed to save getConsole().log", e1);
         }
         return toSave;
     }
@@ -137,7 +134,7 @@ public class Main extends Application {
         try {
             Files.createDirectories(directory);
         } catch (IOException e1) {
-            console.log(Level.WARNING, "Failed to create directories", e1);
+            getConsole().log(Level.WARNING, "Failed to create directories", e1);
         }
         return directory;
     }
@@ -179,23 +176,6 @@ public class Main extends Application {
         writer.close();
     }
 
-    private void shutdownService() {
-        service.shutdown();
-
-        if (!service.isShutdown()) {
-            console.log(Level.INFO, "Executor service was not shutdown, firmly shutting down now!", null);
-
-            try {
-                Thread.sleep(1000);
-                service.shutdownNow();
-
-                console.log(Level.INFO, "Executor service was shutdown successfully", null);
-            } catch (InterruptedException e) {
-                System.exit(-1);
-            }
-        }
-    }
-
     private void saveProperties() {
         try {
             if (!Files.exists(propertiesPath)) {
@@ -204,12 +184,8 @@ public class Main extends Application {
 
             settings.store(Files.newOutputStream(propertiesPath));
         } catch (IOException e) {
-            console.log(Level.WARNING, "Failed to store properties", e);
+            getConsole().log(Level.WARNING, "Failed to store properties", e);
         }
-    }
-
-    public Console getConsole() {
-        return console;
     }
 
     private class SaveHandler extends Handler {
