@@ -1,6 +1,7 @@
 package org.arsok.app;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
@@ -12,6 +13,7 @@ import static org.arsok.app.Main.instance;
 public class RayTrace {
     private final ObjectProperty<Image> backgroundImage = new SimpleObjectProperty<>();
     private final WritableImage image;
+    private final SimpleDoubleProperty distance = new SimpleDoubleProperty();
 
     //TODO: handle writer
     private final PixelWriter writer;
@@ -19,6 +21,19 @@ public class RayTrace {
 
     public RayTrace() {
         this(1000, 1000);
+        this.setDistance(3 * Math.sqrt(3) * 6.67408e-11 * blackHole.getMass() / (299792458.0 * 299792458) * 1.5); //1.5 times the critical distance
+    }
+
+    public double getDistance() {
+        return distance.get();
+    }
+
+    public void setDistance(double distance) {
+        this.distance.set(distance);
+    }
+
+    public SimpleDoubleProperty distanceProperty() {
+        return distance;
     }
 
     public RayTrace(int width, int height) {
@@ -90,14 +105,49 @@ public class RayTrace {
         @Override
         public void run() {
             PixelReader backgroundReader = backgroundImage.get().getPixelReader();
-            int backgroundX = 0;
-            int backgroundY = 0;
 
+            //double test = phi(getDistance(), -0.3);
             //TODO: compute background coordinates
+
 
             for (int x = 0; x < image.getWidth(); x++) {
                 for (int y = 0; y < image.getHeight(); y++) {
-                    writer.setColor(x, y, backgroundReader.getColor(backgroundX, backgroundY));
+                    /*
+
+                    double zenithAngle = 2 * Math.atan(1 / Math.sqrt(centeredX * centeredX + centeredY * centeredY)); //spherical coordinate of the sky point that the point in the plane of the camera maps to
+                    double azithmuthalAngle = Math.atan2(centeredY, centeredX); //spherical coordinate of the sky point that the point in the plane of the camera maps to
+                    zenithAngle = zenithAngle + phi(distance, Math.PI - zenithAngle); //black hole lensing and a coordinate transform because the lensing formula takes the angle between the nadir and the light ray, not the zenith and the light ray
+
+                    */
+
+                    //camera specifications
+                    int centeredX = (int) (x - image.getWidth() / 2);
+                    int centeredY = (int) (y - image.getHeight() / 2);
+                    double angleOfView = Math.PI / 4; //vertical angle of view
+                    double aspectRatio = 1;
+                    double halfPlaneHeight = Math.tan(angleOfView / 2);
+                    double halfPlaneWidth = aspectRatio * halfPlaneHeight;
+
+
+                    //mapping from pixel to emission angle and lensing that angle
+                    double emissionAzithmuthalAngle = Math.atan(centeredX * halfPlaneWidth / (image.getWidth() / 2.0)); //angle to the right or left in radians
+                    double emissionEquatoralAngle = Math.atan(centeredY * halfPlaneHeight / (image.getHeight() / 2.0)); //angle up or down in radians
+                    double blackHoleAngle = Math.hypot(emissionAzithmuthalAngle, emissionEquatoralAngle); //angle between black hole radius and vector pointing to pixel in camera plane
+                    double lensedAngle = blackHoleAngle - phi(getDistance(), blackHoleAngle); //angle after lensing
+
+                    //applying lensing to emission angle to get final angle of impact in the celestial sphere
+                    double change = (lensedAngle - blackHoleAngle) / blackHoleAngle;
+                    double sphereAzithmuthalAngle = emissionAzithmuthalAngle + emissionAzithmuthalAngle * change; //horizontal component of the lensed angle
+                    double sphereEquatoralAngle = emissionEquatoralAngle + emissionEquatoralAngle * change; //vertical component of the lensed angle
+
+                    double longitude = ((emissionAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) + emissionAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to longitude
+                    double latitude = ((emissionEquatoralAngle - Math.PI / 2) % (Math.PI * 2) + emissionEquatoralAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to latitude
+
+
+                    int backgroundX = (int) (longitude / (Math.PI * 2) * backgroundImage.get().getWidth() + backgroundImage.get().getWidth() / 2); //what background pixel the light hits
+                    int backgroundY = (int) (latitude / (Math.PI * 2) * backgroundImage.get().getHeight() + backgroundImage.get().getHeight() / 2);//what background pixel the light hits
+
+                    writer.setColor(x, (int) image.getHeight() - y, backgroundReader.getColor(backgroundX, (int) backgroundImage.get().getHeight() - backgroundY));
                 }
             }
         }
