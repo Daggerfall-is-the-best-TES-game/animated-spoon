@@ -52,10 +52,6 @@ public class Main extends Environment {
 
     @Override
     public void startApp() {
-/*        getConsole().getLogger().setLevel(Level.ALL);
-        handler.setLevel(Level.ALL);
-        getConsole().getLogger().addHandler(handler);*/
-
         getConsole().log(Level.INFO, "Starting application", null);
 
         defaultBuilders();
@@ -70,7 +66,7 @@ public class Main extends Environment {
 
     private void loadDisplay() {
         load(getClass().getResource("/Display.fxml"));
-        load(getClass().getResource("/SettingsDisplay.fxml"));
+        load(getClass().getResource("/Settings.fxml"));
         load(getClass().getResource("/Alert.fxml"));
         FXBundle<Display> bundle = AssetManager.<FXBundle<Display>>firstNameContains("Display.fxml").getContent();
 
@@ -84,7 +80,7 @@ public class Main extends Environment {
                 settings.load(Files.newInputStream(propertiesPath));
             }
 
-            settings.setValueIfNotContains("backgroundImage", "mwpan2_watermarked.jpg");
+            settings.setValueIfNotContains("backgroundImage", "/mwpan2_watermarked.jpg");
         } catch (IOException e) {
             getConsole().log(Level.WARNING, "Failed to load properties", e);
         }
