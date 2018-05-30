@@ -85,7 +85,7 @@ public class RayTrace {
                         //camera specifications
                         int centeredX = (int) (x - image.getWidth() / 2);
                         int centeredY = (int) (y - image.getHeight() / 2);
-                        double angleOfView = Math.PI / 4; //vertical angle of view
+                        double angleOfView = Math.PI / 2; //vertical angle of view
                         double aspectRatio = 1;
                         double halfPlaneHeight = Math.tan(angleOfView / 2);
                         double halfPlaneWidth = aspectRatio * halfPlaneHeight;
@@ -113,7 +113,9 @@ public class RayTrace {
                             int backgroundY = (int) (latitude / (Math.PI * 2) * backgroundImage.get().getHeight() + backgroundImage.get().getHeight() / 2);//what background pixel the light hits
 
                             //drawing the pixel
-                            writer.setColor(x, (int) image.getHeight() - y, backgroundReader.getColor(backgroundX, (int) backgroundImage.get().getHeight() - backgroundY));
+                            int normalizeX = normalize(backgroundX, 0, 937);
+                            int normalizeY = normalize(backgroundY, 0, 780);
+                            writer.setColor(x, (int) image.getHeight() - y - 1, backgroundReader.getColor(normalizeX, normalizeY));
                         }
 
 
@@ -158,6 +160,16 @@ public class RayTrace {
                     bendingAngle += coefficients[i] * Math.pow((1 - bPrime), i + 1);
                 }
                 return bendingAngle;
+            }
+        }
+
+        private int normalize(int x, int min, int max) {
+            if (x > max) {
+                return max;
+            } else if (x < min) {
+                return min;
+            } else {
+                return x;
             }
         }
     }
