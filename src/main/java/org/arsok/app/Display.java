@@ -63,6 +63,7 @@ public class Display extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         RayTrace rayTrace = new RayTrace();
         rayTrace.bindBlackHole(blackHole);
+        rayTrace.init();
         rayTrace.start();
 
         instance.getSettings().getSetting("backgroundImage").valueProperty().addListener((observable, oldValue, newValue) -> {

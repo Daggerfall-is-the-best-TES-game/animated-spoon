@@ -21,7 +21,11 @@ public class RayTrace {
 
     public RayTrace() {
         this(1000, 1000);
+    }
+
+    public void init() {
         this.setDistance(3 * Math.sqrt(3) * 6.67408e-11 * blackHole.getMass() / (299792458.0 * 299792458) * 1.5); //1.5 times the critical distance
+
     }
 
     public double getDistance() {
