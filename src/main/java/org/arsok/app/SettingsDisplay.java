@@ -1,33 +1,26 @@
 package org.arsok.app;
 
+import com.meti.lib.asset.AssetManager;
+import com.meti.lib.fx.FXBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import org.arsok.lib.Alert;
-import org.arsok.lib.Controller;
-import org.arsok.lib.FXMLBundle;
-import org.arsok.lib.FXMLBundleFactory;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 
+import static com.meti.lib.Environment.getMainInstance;
 import static javafx.scene.layout.GridPane.setHalignment;
 import static javafx.scene.layout.GridPane.setValignment;
-import static org.arsok.app.Main.instance;
 
 public class SettingsDisplay extends Controller implements Initializable {
     private final HashMap<String, TextField> fields = new HashMap<>();
-    private final URL alertURL = getClass().getResource("/Alert.fxml");
 
     @FXML
     private GridPane propertiesPane;
@@ -42,21 +35,17 @@ public class SettingsDisplay extends Controller implements Initializable {
 
         if (changed) {
             //display alert
-            try {
-                FXMLBundle<Parent, Alert> parentObjectFXMLBundle = FXMLBundleFactory.newFXMLBundle(alertURL, new Stage());
-                Alert alert = parentObjectFXMLBundle.getController();
-                alert.setMessage("Unsaved settings!");
-                alert.setSubMesage("Do you want to save your settings?");
-                alert.setLocation1(null);
-                alert.setLocation2(null);
-                alert.setOption1("No", url -> {
-                    alert.getStage().close();
-                    stage.close();
-                });
-                alert.setOption2("Yes", url -> alert.getStage().close());
-            } catch (IOException e) {
-                instance.getConsole().log(Level.WARNING, "Failed to load alert", e);
-            }
+            FXBundle<Alert> parentObjectFXMLBundle = AssetManager.<FXBundle<Alert>>firstNameContains("Alert.fxml").getContent();
+            Alert alert = parentObjectFXMLBundle.getController();
+            alert.setMessage("Unsaved settings!");
+            alert.setSubMesage("Do you want to save your settings?");
+            alert.setLocation1(null);
+            alert.setLocation2(null);
+            alert.setOption1("No", url -> {
+                alert.getStage().close();
+                stage.close();
+            });
+            alert.setOption2("Yes", url -> alert.getStage().close());
         } else {
             //close normally
             stage.close();
@@ -72,7 +61,7 @@ public class SettingsDisplay extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        settings = instance.getSettings();
+        settings = ((Main) getMainInstance()).getSettings();
         if (settings.size() == 0) {
             Text t1 = new Text("No settings found");
             Text t2 = new Text("No settings found");

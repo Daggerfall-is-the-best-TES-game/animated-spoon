@@ -9,7 +9,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-import static org.arsok.app.Main.instance;
+import static com.meti.lib.Environment.getMainInstance;
 
 public class RayTrace {
     private final ObjectProperty<Image> backgroundImage = new SimpleObjectProperty<>();
@@ -22,6 +22,12 @@ public class RayTrace {
 
     public RayTrace() {
         this(1000, 1000);
+    }
+
+    public RayTrace(int width, int height) {
+        this.image = new WritableImage(width, height);
+        this.writer = image.getPixelWriter();
+        //temporary hardcoded assignment of blackhole for testing purposes
     }
 
     public void init() {
@@ -41,14 +47,8 @@ public class RayTrace {
         return distance;
     }
 
-    public RayTrace(int width, int height) {
-        this.image = new WritableImage(width, height);
-        this.writer = image.getPixelWriter();
-        //temporary hardcoded assignment of blackhole for testing purposes
-    }
-
     public void start() {
-        instance.getService().submit(new RayTraceRunnable());
+        getMainInstance().getService().submit(new RayTraceRunnable());
     }
 
     public Image getImage() {
@@ -67,6 +67,61 @@ public class RayTrace {
     private class RayTraceRunnable implements Runnable {
         private RayTraceRunnable() {
 
+        }
+
+        @Override
+        public void run() {
+            PixelReader backgroundReader = backgroundImage.get().getPixelReader();
+
+            //double test = phi(getDistance(), -0.3);
+            //TODO: compute background coordinates
+
+
+            try {
+                for (int x = 0; x < image.getWidth(); x++) {
+                    for (int y = 0; y < image.getHeight(); y++) {
+
+
+                        //camera specifications
+                        int centeredX = (int) (x - image.getWidth() / 2);
+                        int centeredY = (int) (y - image.getHeight() / 2);
+                        double angleOfView = Math.PI / 4; //vertical angle of view
+                        double aspectRatio = 1;
+                        double halfPlaneHeight = Math.tan(angleOfView / 2);
+                        double halfPlaneWidth = aspectRatio * halfPlaneHeight;
+
+
+                        //mapping from pixel to emission angle and lensing that angle
+                        double emissionAzithmuthalAngle = Math.atan(centeredX * halfPlaneWidth / (image.getWidth() / 2.0)); //angle to the right or left in radians
+                        double emissionEquatoralAngle = Math.atan(centeredY * halfPlaneHeight / (image.getHeight() / 2.0)); //angle up or down in radians
+                        double blackHoleAngle = Math.hypot(emissionAzithmuthalAngle, emissionEquatoralAngle); //angle between black hole radius and vector pointing to pixel in camera plane
+                        double lensedAngle = blackHoleAngle - phi(getDistance(), blackHoleAngle); //angle after lensing
+
+                        if (Double.isNaN(lensedAngle)) {  //means lensedAngle is NaN
+                            writer.setColor(x, (int) image.getHeight() - y - 1, Color.BLACK);
+                        } else {
+                            //applying lensing to emission angle to get final angle of impact in the celestial sphere
+                            double change = (lensedAngle - blackHoleAngle) / blackHoleAngle;
+                            double sphereAzithmuthalAngle = emissionAzithmuthalAngle + emissionAzithmuthalAngle * change; //horizontal component of the lensed angle
+                            double sphereEquatoralAngle = emissionEquatoralAngle + emissionEquatoralAngle * change; //vertical component of the lensed angle
+
+                            double longitude = ((sphereAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) + sphereAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to longitude
+                            double latitude = ((sphereEquatoralAngle - Math.PI / 2) % (Math.PI * 2) + sphereEquatoralAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to latitude
+
+
+                            int backgroundX = (int) (longitude / (Math.PI * 2) * backgroundImage.get().getWidth() + backgroundImage.get().getWidth() / 2); //what background pixel the light hits
+                            int backgroundY = (int) (latitude / (Math.PI * 2) * backgroundImage.get().getHeight() + backgroundImage.get().getHeight() / 2);//what background pixel the light hits
+
+                            //drawing the pixel
+                            writer.setColor(x, (int) image.getHeight() - y, backgroundReader.getColor(backgroundX, (int) backgroundImage.get().getHeight() - backgroundY));
+                        }
+
+
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         //bending angle of light ray. This is a big deal
@@ -103,58 +158,6 @@ public class RayTrace {
                     bendingAngle += coefficients[i] * Math.pow((1 - bPrime), i + 1);
                 }
                 return bendingAngle;
-            }
-        }
-
-
-        @Override
-        public void run() {
-            PixelReader backgroundReader = backgroundImage.get().getPixelReader();
-
-            //double test = phi(getDistance(), -0.3);
-            //TODO: compute background coordinates
-
-
-            for (int x = 0; x < image.getWidth(); x++) {
-                for (int y = 0; y < image.getHeight(); y++) {
-
-
-                    //camera specifications
-                    int centeredX = (int) (x - image.getWidth() / 2);
-                    int centeredY = (int) (y - image.getHeight() / 2);
-                    double angleOfView = Math.PI / 4; //vertical angle of view
-                    double aspectRatio = 1;
-                    double halfPlaneHeight = Math.tan(angleOfView / 2);
-                    double halfPlaneWidth = aspectRatio * halfPlaneHeight;
-
-
-                    //mapping from pixel to emission angle and lensing that angle
-                    double emissionAzithmuthalAngle = Math.atan(centeredX * halfPlaneWidth / (image.getWidth() / 2.0)); //angle to the right or left in radians
-                    double emissionEquatoralAngle = Math.atan(centeredY * halfPlaneHeight / (image.getHeight() / 2.0)); //angle up or down in radians
-                    double blackHoleAngle = Math.hypot(emissionAzithmuthalAngle, emissionEquatoralAngle); //angle between black hole radius and vector pointing to pixel in camera plane
-                    double lensedAngle = blackHoleAngle - phi(getDistance(), blackHoleAngle); //angle after lensing
-
-                    if (lensedAngle != lensedAngle) {  //means lensedAngle is NaN
-                        writer.setColor(x, (int) image.getHeight() - y, Color.BLACK);
-                        continue;
-
-                    }
-
-                    //applying lensing to emission angle to get final angle of impact in the celestial sphere
-                    double change = (lensedAngle - blackHoleAngle) / blackHoleAngle;
-                    double sphereAzithmuthalAngle = emissionAzithmuthalAngle + emissionAzithmuthalAngle * change; //horizontal component of the lensed angle
-                    double sphereEquatoralAngle = emissionEquatoralAngle + emissionEquatoralAngle * change; //vertical component of the lensed angle
-
-                    double longitude = ((sphereAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) + sphereAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to longitude
-                    double latitude = ((sphereEquatoralAngle - Math.PI / 2) % (Math.PI * 2) + sphereEquatoralAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to latitude
-
-
-                    int backgroundX = (int) (longitude / (Math.PI * 2) * backgroundImage.get().getWidth() + backgroundImage.get().getWidth() / 2); //what background pixel the light hits
-                    int backgroundY = (int) (latitude / (Math.PI * 2) * backgroundImage.get().getHeight() + backgroundImage.get().getHeight() / 2);//what background pixel the light hits
-
-                    //drawing the pixel
-                    writer.setColor(x, (int) image.getHeight() - y, backgroundReader.getColor(backgroundX, (int) backgroundImage.get().getHeight() - backgroundY));
-                }
             }
         }
     }

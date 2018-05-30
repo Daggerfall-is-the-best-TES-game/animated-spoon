@@ -1,14 +1,11 @@
 package org.arsok.app;
 
-import javafx.scene.Parent;
-import javafx.stage.Stage;
-import org.arsok.lib.Alert;
-import org.arsok.lib.FXMLBundle;
+import com.meti.lib.asset.AssetManager;
+import com.meti.lib.fx.FXBundle;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,10 +15,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.arsok.lib.FXMLBundleFactory.newFXMLBundle;
-
 public class Console {
-    private final URL alertURL = getClass().getResource("/Alert.fxml");
     private final Logger logger = Logger.getLogger("Application");
     private boolean exceptionLogged = false;
 
@@ -62,21 +56,17 @@ public class Console {
 
     private void levelSevere(Level level, String message, Exception e, String saveContent) {
         if (level.equals(Level.SEVERE)) {
-            try {
-                FXMLBundle<Parent, Alert> parentObjectFXMLBundle = newFXMLBundle(alertURL, new Stage());
-                Alert alert = parentObjectFXMLBundle.getController();
-                if (message != null) {
-                    alert.setMessage(message);
-                }
-
-                if (e != null) {
-                    alert.setSubMesage(exceptionToString(e));
-                }
-
-                buildOptions(saveContent, alert);
-            } catch (IOException e1) {
-                log(Level.WARNING, "Unable to load alert", e1);
+            FXBundle<Alert> parentObjectFXMLBundle = AssetManager.<FXBundle<Alert>>firstNameContains("Alert.fxml").getContent();
+            Alert alert = parentObjectFXMLBundle.getController();
+            if (message != null) {
+                alert.setMessage(message);
             }
+
+            if (e != null) {
+                alert.setSubMesage(exceptionToString(e));
+            }
+
+            buildOptions(saveContent, alert);
         } else {
             throw new IllegalStateException("Invalid level: " + level.getName());
         }
