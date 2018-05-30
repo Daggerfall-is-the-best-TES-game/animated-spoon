@@ -61,12 +61,13 @@ public class Display extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         RayTrace rayTrace = new RayTrace();
         rayTrace.bindBlackHole(blackHole);
-        rayTrace.start();
-        String filePath = instance.getSettings().getSetting("backgroundImage").getValue();
+
+        Main mainInstance = (Main) Main.getMainInstance();
+        String filePath = mainInstance.getSettings().getSetting("backgroundImage").getValue();
         rayTrace.setBackgroundImage(new Image(getClass().getResourceAsStream(filePath)));
 
 
-        instance.getSettings().getSetting("backgroundImage").valueProperty().addListener((observable, oldValue, newValue) -> {
+        mainInstance.getSettings().getSetting("backgroundImage").valueProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 rayTrace.setBackgroundImage(new Image(Files.newInputStream(Paths.get(newValue))));
             } catch (IOException e) {
@@ -81,6 +82,9 @@ public class Display extends Controller implements Initializable {
 
         writableImageScrollPane.setVvalue(0.5);
         writableImageScrollPane.setHvalue(0.5);
+
+        rayTrace.init();
+        rayTrace.start();
     }
 
     @Override
