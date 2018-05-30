@@ -9,7 +9,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-import static org.arsok.app.Main.instance;
+import static com.meti.lib.Environment.getMainInstance;
 
 public class RayTrace {
     private final ObjectProperty<Image> backgroundImage = new SimpleObjectProperty<>();
@@ -48,7 +48,7 @@ public class RayTrace {
     }
 
     public void start() {
-        instance.getService().submit(new RayTraceRunnable());
+        getMainInstance().getService().submit(new RayTraceRunnable());
     }
 
     public Image getImage() {

@@ -5,10 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="afd8bc95-7dc7-41dc-8595-c6c820ea5425" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/modules/animated-spoon_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/animated-spoon_main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/animated-spoon_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/animated-spoon_test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/app/Console.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/arsok/app/Console.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/app/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/arsok/app/Display.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/arsok/app/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/app/RayTrace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/arsok/app/RayTrace.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/app/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/arsok/app/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/app/SettingsDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/arsok/app/SettingsDisplay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/engine/Engine.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/engine/EngineException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/engine/Tensor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/engine/Vector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/lib/Alert.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/arsok/app/Alert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/lib/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/arsok/app/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/lib/FXMLBundle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/arsok/lib/FXMLBundleFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Alert.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Alert.fxml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -162,7 +178,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="version2" />
+        <entry key="$PROJECT_DIR$" value="rebase" />
       </map>
     </option>
   </component>
@@ -174,7 +190,7 @@
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
       <map>
-        <entry key="$PROJECT_DIR$" value="C:\Users\David\.gradle\wrapper\dists\gradle-4.4-all\9br9xq1tocpiv8o6njlyu5op1\gradle-4.4" />
+        <entry key="$PROJECT_DIR$" value="C:\Users\1405066\.gradle\wrapper\dists\gradle-4.4-all\9br9xq1tocpiv8o6njlyu5op1\gradle-4.4" />
       </map>
     </option>
     <option name="myGradleVersions">
@@ -379,9 +395,9 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="6095305758000" />
+        <entry key="$PROJECT_DIR$" value="6109018669829" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="1052192205" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="2607500573" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2083459160" />
         <entry key="$PROJECT_DIR$/settings.gradle" value="86926340" />
       </map>
@@ -578,25 +594,24 @@
         <option value="$PROJECT_DIR$/src/org/arsok/app/PropertiesDisplay.java" />
         <option value="$PROJECT_DIR$/src/org/arsok/app/Display.java" />
         <option value="$PROJECT_DIR$/src/org/arsok/app/RayTrace.java" />
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/RayTraceTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/SettingsDisplay.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/BlackHole.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/Settings.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/Console.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/Setting.java" />
-        <option value="$PROJECT_DIR$/.properties" />
         <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/RayTrace.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/Display.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/Console.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/arsok/app/SettingsDisplay.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="10" />
-    <option name="y" value="20" />
-    <option name="width" value="1260" />
-    <option name="height" value="944" />
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+    <option name="x" value="-41" />
+    <option name="y" value="-16" />
+    <option name="width" value="1280" />
+    <option name="height" value="1024" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -606,7 +621,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -695,13 +709,14 @@
               <item name="animated-spoon" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -1015,12 +1030,13 @@
       <window_info anchor="right" id="Capture Analysis" order="11" />
       <window_info anchor="bottom" id="Event Log" order="16" sideWeight="0.50161815" side_tool="true" weight="0.33294663" />
       <window_info anchor="right" id="Maven Projects" order="15" />
-      <window_info active="true" anchor="bottom" id="Run" order="4" sideWeight="0.49838188" visible="true" weight="0.2609209" />
+      <window_info active="true" anchor="bottom" id="Run" order="4" sideWeight="0.49838188" visible="true" weight="0.33054394" />
       <window_info anchor="bottom" id="Version Control" order="15" />
       <window_info anchor="bottom" id="Terminal" order="17" />
       <window_info id="Capture Tool" order="11" />
       <window_info id="Designer" order="9" />
-      <window_info content_ui="combo" id="Project" order="4" visible="true" weight="0.22168285" />
+      <window_info content_ui="combo" id="Project" order="4" visible="true" weight="0.21484375" />
+      <window_info anchor="bottom" id="Statistic" order="12" />
       <window_info anchor="right" id="Gradle" order="12" weight="0.32928804" />
       <window_info id="Structure" order="8" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
@@ -1030,41 +1046,41 @@
       <window_info id="Favorites" order="13" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
+      <window_info anchor="bottom" id="Messages" order="14" weight="0.32677165" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="bottom" id="Statistic" order="12" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Build" order="18" weight="0.32939634" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.328084" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3285273" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3285273" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Gradle" order="5" weight="0.32928804" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49838188" weight="0.3305785" />
-      <window_info anchor="right" id="Theme Preview" order="6" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21521036" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49838188" weight="0.33054394" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info anchor="bottom" id="Statistic" order="12" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21484375" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info anchor="bottom" id="TODO" order="7" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Designer" order="2" />
+      <window_info anchor="bottom" id="Statistic" order="6" />
       <window_info id="UI Designer" order="5" />
-      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3966942" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50161815" side_tool="true" weight="0.33294663" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50161815" side_tool="true" weight="0.33294663" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Build" order="11" weight="0.32939634" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Build" order="12" weight="0.32939634" />
       <window_info id="Capture Tool" order="4" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32677165" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="Messages" order="8" weight="0.32677165" />
       <window_info anchor="right" id="Maven Projects" order="8" />
       <window_info id="Favorites" order="6" side_tool="true" />
     </layout-to-restore>
@@ -1129,14 +1145,17 @@
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
-    <expressions id="watch">
+    <expressions id="evaluateExpression">
       <expression>
-        <expression-string>image</expression-string>
+        <expression-string>assetBuilders</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-    </expressions>
-    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>getClass().getResource(&quot;/Display.fxml&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>instance.getSettings().getSetting(&quot;Background Image&quot;)</expression-string>
         <language-id>JAVA</language-id>
@@ -1150,6 +1169,13 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/RayTrace.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2553">
+          <caret line="111" column="58" selection-start-line="111" selection-start-column="58" selection-end-line="111" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/BlackHole.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="161">
@@ -1232,24 +1258,92 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/RayTraceTest.java" />
     <entry file="file://J:/physics project/Pendulum.java" />
-    <entry file="file://$PROJECT_DIR$/build.gradle">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/io/StringWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
+        <state relative-caret-position="289">
+          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/io/StringWriter.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/Console.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/SettingsDisplay.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/Setting.java" />
+    <entry file="file://$PROJECT_DIR$/.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/BlackHole.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="208">
+          <caret line="8" column="5" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/Settings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="28" column="5" lean-forward="true" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
           <folding>
-            <element signature="e#188#189#0" expanded="true" />
-            <element signature="e#215#216#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/RayTrace.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1061">
+          <caret line="101" column="13" selection-start-line="101" selection-start-column="13" selection-end-line="101" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/production/animated-spoon/org/arsok/app/BlackHole.class" />
+    <entry file="jar://$PROJECT_DIR$/libs/Infinity.jar!/com/meti/lib/asset/AssetManager.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="80" column="24" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/Alert.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/Infinity.jar!/com/meti/lib/fx/FXBundle.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="20" column="11" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/SettingsDisplay.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="51" column="69" selection-start-line="51" selection-start-column="69" selection-end-line="51" selection-end-column="69" />
+          <folding>
+            <element signature="e#1277#1294#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1270,28 +1364,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/RayTrace.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/Console.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1299">
+          <caret line="71" column="45" selection-start-line="71" selection-start-column="45" selection-end-line="71" selection-end-column="45" />
         <state relative-caret-position="148">
-          <caret line="111" selection-start-line="111" selection-end-line="111" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#718#719#0" expanded="true" />
-            <element signature="e#750#751#0" expanded="true" />
-            <element signature="e#933#934#0" expanded="true" />
-            <element signature="e#970#971#0" expanded="true" />
-            <element signature="e#1018#1019#0" expanded="true" />
-            <element signature="e#1061#1062#0" expanded="true" />
-            <element signature="e#1115#1116#0" expanded="true" />
-            <element signature="e#1146#1147#0" expanded="true" />
-            <element signature="e#1401#1402#0" expanded="true" />
-            <element signature="e#1469#1470#0" expanded="true" />
-            <element signature="e#1500#1501#0" expanded="true" />
-            <element signature="e#1528#1529#0" expanded="true" />
-            <element signature="e#1582#1583#0" expanded="true" />
-            <element signature="e#1624#1625#0" expanded="true" />
-            <element signature="e#1675#1676#0" expanded="true" />
-            <element signature="e#1722#1723#0" expanded="true" />
+            <element signature="e#1604#1621#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/arsok/app/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-868">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
+          <folding>
+            <element signature="e#1602#1603#0" expanded="true" />
+            <element signature="e#1623#1624#0" expanded="true" />
+            <element signature="e#1872#1903#0" expanded="true" />
           </folding>
         </state>
       </provider>
