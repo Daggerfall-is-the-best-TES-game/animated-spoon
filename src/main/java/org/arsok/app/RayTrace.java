@@ -85,7 +85,7 @@ public class RayTrace {
                         //camera specifications
                         int centeredX = (int) (x - image.getWidth() / 2);
                         int centeredY = (int) (y - image.getHeight() / 2);
-                        double angleOfView = Math.PI / 4; //vertical angle of view
+                        double angleOfView = Math.PI / 2; //vertical angle of view
                         double aspectRatio = 1;
                         double halfPlaneHeight = Math.tan(angleOfView / 2);
                         double halfPlaneWidth = aspectRatio * halfPlaneHeight;
@@ -105,15 +105,16 @@ public class RayTrace {
                             double sphereAzithmuthalAngle = emissionAzithmuthalAngle + emissionAzithmuthalAngle * change; //horizontal component of the lensed angle
                             double sphereEquatoralAngle = emissionEquatoralAngle + emissionEquatoralAngle * change; //vertical component of the lensed angle
 
-                            double longitude = ((sphereAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) + sphereAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to longitude
-                            double latitude = ((sphereEquatoralAngle - Math.PI / 2) % (Math.PI * 2) + sphereEquatoralAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to latitude
+                            double longitude = ((sphereAzithmuthalAngle - Math.PI / 2) % (Math.PI) + Math.PI) % (Math.PI) - Math.PI / 2; //mapping emission angle to longitude
+                            double latitude = ((sphereEquatoralAngle - Math.PI / 2) % (Math.PI) + Math.PI) % (Math.PI) - Math.PI / 2; //mapping emission angle to latitude
 
 
                             int backgroundX = (int) (longitude / (Math.PI * 2) * backgroundImage.get().getWidth() + backgroundImage.get().getWidth() / 2); //what background pixel the light hits
                             int backgroundY = (int) (latitude / (Math.PI * 2) * backgroundImage.get().getHeight() + backgroundImage.get().getHeight() / 2);//what background pixel the light hits
 
                             //drawing the pixel
-                            writer.setColor(x, (int) image.getHeight() - y, backgroundReader.getColor(backgroundX, (int) backgroundImage.get().getHeight() - backgroundY));
+                            //writer.setColor(x, (int) image.getHeight() - y, backgroundReader.getColor(backgroundX, (int) backgroundImage.get().getHeight() - backgroundY));
+                            writer.setColor(x, y, backgroundReader.getColor(backgroundX, backgroundY));
                         }
 
 
