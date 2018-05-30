@@ -66,7 +66,13 @@ public class Display extends Controller implements Initializable {
         rayTrace.init();
         rayTrace.start();
 
+        String filePath = instance.getSettings().getSetting("backgroundImage").getValue();
+        rayTrace.setBackgroundImage(new Image(getClass().getResourceAsStream(filePath)));
+
+
         instance.getSettings().getSetting("backgroundImage").valueProperty().addListener((observable, oldValue, newValue) -> {
+
+
             try {
                 rayTrace.setBackgroundImage(new Image(Files.newInputStream(Paths.get(newValue))));
             } catch (IOException e) {
