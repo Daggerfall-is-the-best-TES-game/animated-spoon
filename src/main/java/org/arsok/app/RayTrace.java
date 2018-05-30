@@ -112,12 +112,8 @@ public class RayTrace {
                             int backgroundX = (int) (longitude / (Math.PI * 2) * backgroundImage.get().getWidth() + backgroundImage.get().getWidth() / 2); //what background pixel the light hits
                             int backgroundY = (int) (latitude / (Math.PI * 2) * backgroundImage.get().getHeight() + backgroundImage.get().getHeight() / 2);//what background pixel the light hits
 
-                            //drawing the pixel
-                            //writer.setColor(x, (int) image.getHeight() - y, backgroundReader.getColor(backgroundX, (int) backgroundImage.get().getHeight() - backgroundY));
                             writer.setColor(x, y, backgroundReader.getColor(backgroundX, backgroundY));
                         }
-
-
                     }
                 }
             } catch (Exception e) {
@@ -159,6 +155,16 @@ public class RayTrace {
                     bendingAngle += coefficients[i] * Math.pow((1 - bPrime), i + 1);
                 }
                 return bendingAngle;
+            }
+        }
+
+        private int normalize(int x, int min, int max) {
+            if (x > max) {
+                return max;
+            } else if (x < min) {
+                return min;
+            } else {
+                return x;
             }
         }
     }
