@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 import static com.meti.lib.Environment.getMainInstance;
 
 public class Display extends Controller implements Initializable {
-    private final URL propertiesURL = getClass().getResource("/SettingsDisplay.fxml");
+    private final URL propertiesURL = getClass().getResource("/Settings.fxml");
 
     @FXML
     private ScrollPane writableImageScrollPane;
@@ -36,7 +36,7 @@ public class Display extends Controller implements Initializable {
 
     @FXML
     public void openProperties() {
-        FXBundle<SettingsDisplay> bundle = AssetManager.<FXBundle<SettingsDisplay>>firstNameContains("SettingsDisplay.fxml").getContent();
+        FXBundle<SettingsDisplay> bundle = AssetManager.<FXBundle<SettingsDisplay>>firstNameContains("Settings.fxml").getContent();
 
         getMainInstance().getStages().get(0).setScene(new Scene(bundle.getParent()));
         getMainInstance().getStages().get(0).show();
