@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 
 import static org.arsok.app.Main.instance;
 
@@ -116,13 +117,7 @@ public class RayTrace {
 
             for (int x = 0; x < image.getWidth(); x++) {
                 for (int y = 0; y < image.getHeight(); y++) {
-                    /*
 
-                    double zenithAngle = 2 * Math.atan(1 / Math.sqrt(centeredX * centeredX + centeredY * centeredY)); //spherical coordinate of the sky point that the point in the plane of the camera maps to
-                    double azithmuthalAngle = Math.atan2(centeredY, centeredX); //spherical coordinate of the sky point that the point in the plane of the camera maps to
-                    zenithAngle = zenithAngle + phi(distance, Math.PI - zenithAngle); //black hole lensing and a coordinate transform because the lensing formula takes the angle between the nadir and the light ray, not the zenith and the light ray
-
-                    */
 
                     //camera specifications
                     int centeredX = (int) (x - image.getWidth() / 2);
@@ -139,18 +134,25 @@ public class RayTrace {
                     double blackHoleAngle = Math.hypot(emissionAzithmuthalAngle, emissionEquatoralAngle); //angle between black hole radius and vector pointing to pixel in camera plane
                     double lensedAngle = blackHoleAngle - phi(getDistance(), blackHoleAngle); //angle after lensing
 
+                    if (lensedAngle != lensedAngle) {  //means lensedAngle is NaN
+                        writer.setColor(x, (int) image.getHeight() - y, Color.BLACK);
+                        continue;
+
+                    }
+
                     //applying lensing to emission angle to get final angle of impact in the celestial sphere
                     double change = (lensedAngle - blackHoleAngle) / blackHoleAngle;
                     double sphereAzithmuthalAngle = emissionAzithmuthalAngle + emissionAzithmuthalAngle * change; //horizontal component of the lensed angle
                     double sphereEquatoralAngle = emissionEquatoralAngle + emissionEquatoralAngle * change; //vertical component of the lensed angle
 
-                    double longitude = ((emissionAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) + emissionAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to longitude
-                    double latitude = ((emissionEquatoralAngle - Math.PI / 2) % (Math.PI * 2) + emissionEquatoralAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to latitude
+                    double longitude = ((sphereAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) + sphereAzithmuthalAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to longitude
+                    double latitude = ((sphereEquatoralAngle - Math.PI / 2) % (Math.PI * 2) + sphereEquatoralAngle - Math.PI / 2) % (Math.PI * 2) - Math.PI; //mapping emission angle to latitude
 
 
                     int backgroundX = (int) (longitude / (Math.PI * 2) * backgroundImage.get().getWidth() + backgroundImage.get().getWidth() / 2); //what background pixel the light hits
                     int backgroundY = (int) (latitude / (Math.PI * 2) * backgroundImage.get().getHeight() + backgroundImage.get().getHeight() / 2);//what background pixel the light hits
 
+                    //drawing the pixel
                     writer.setColor(x, (int) image.getHeight() - y, backgroundReader.getColor(backgroundX, (int) backgroundImage.get().getHeight() - backgroundY));
                 }
             }
