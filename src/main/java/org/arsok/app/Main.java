@@ -65,13 +65,12 @@ public class Main extends Environment {
     }
 
     private void defaultBuilders() {
-        FXBuilder builder = new FXBuilder();
-        addAssetBuilder(builder);
+        addAssetBuilder(new FXBuilder());
     }
 
     private void loadDisplay() {
         load(getClass().getResource("/Display.fxml"));
-        load(getClass().getResource("/Settings.fxml"));
+        load(getClass().getResource("/SettingsDisplay.fxml"));
         load(getClass().getResource("/Alert.fxml"));
         FXBundle<Display> bundle = AssetManager.<FXBundle<Display>>firstNameContains("Display.fxml").getContent();
 
